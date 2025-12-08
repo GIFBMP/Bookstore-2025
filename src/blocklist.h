@@ -251,5 +251,4 @@ namespace gifbmp {
         //List part
     };
 }
-using namespace gifbmp;
 #endif
