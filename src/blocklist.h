@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
+#include <vector>
+#include <cassert>
 namespace gifbmp {
     using std::string;
     using std::fstream;
@@ -53,7 +55,7 @@ namespace gifbmp {
         }
     public:
         BlockList() = default;
-        void initialise(string FN = "", bool typ = 0) {
+        void initialise(string FN = "", bool typ = 1) {//0:reserve 1:new
             if (FN != "") file_name = FN;
             else return;
             if (isFileExists(FN) && !typ) return;
@@ -229,24 +231,33 @@ namespace gifbmp {
             if (merge(nw, i)) return;
             else update(nw, i);
         }
-        void query(T a) {
+        std::vector<Val> query(T a) {
+            std::vector<Val> v;
+            v.clear();
             int i = 1; Block nw;
             bool fl = false;
             for (; i != 0; i = nw.nx) {
                 read(nw, i);
-                //printf ("%d\n", nw.sz);
                 if (!nw.sz) continue;
                 if (a < nw.data[0].a) break;
                 if (nw.data[0].a <= a && a <= nw.data[nw.sz - 1].a) {
                     for (int j = 0; j < nw.sz; j++)
-                        if (nw.data[j].a == a) {
-                            fl = true;
-                            std::cout << nw.data[j].b << ' ';
-                        }
+                        if (nw.data[j].a == a)
+                            v.push_back(nw.data[j].b);
                 }
             }
-            if (!fl) std::cout << "null";
-            std::cout << '\n';
+            return v;
+        }
+        void printall() {
+            int i = 1; Block nw;
+            bool fl = false;
+            for (; i != 0; i = nw.nx) {
+                read(nw, i);
+                if (nw.sz) fl = true;
+                for (int j = 0; j < nw.sz; j++)
+                    std::cout << nw.data[j].b << '\n';
+            }
+            if (fl == false) std::cout << '\n';
         }
         //List part
     };
