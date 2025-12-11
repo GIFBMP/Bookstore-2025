@@ -134,6 +134,11 @@ namespace gifbmp {
         profits.read(inc, 1);
         inc += tmp.price * cnt;
         profits.update(inc, 1);
+        for (int i = tp; i; i--) {
+            if (!is_selected[i]) continue;
+            if (selectedbook[i].ISBN == isbn)
+                selectedbook[i] = tmp;
+        }
     }
     void select(const Index20 &isbn) {
         if (nw_user.privilege < 3) {
@@ -209,7 +214,7 @@ namespace gifbmp {
             return;
         }
         std::cerr << "import isbn:" << selectedbook[tp].ISBN << ",cnt:" << cnt << '\n'; 
-        Book tmp = selectedbook[tp];
+        Book tmp = selectedbook[tp], tmp2 = tmp;
         tmp.cnt += cnt;
         finance cost = finance(0.0, totalcost);
         finance_log.write(cost);
@@ -218,6 +223,10 @@ namespace gifbmp {
         ouc += totalcost;
         profits.update(ouc, 2);
         upd(selectedbook[tp], tmp);
-        selectedbook[tp] = tmp;
+        for (int i = tp; i; i--) {
+            if (!is_selected[i]) continue;
+            if (selectedbook[i] == tmp2)
+                selectedbook[i] = tmp;
+        }
     }
 }
