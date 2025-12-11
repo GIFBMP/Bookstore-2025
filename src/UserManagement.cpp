@@ -21,9 +21,15 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
-        int cnt = login_cnt.query(userid)[0];
-        login_cnt.del(userid, cnt);
-        login_cnt.ins(userid, cnt + 1);
+        std::vector<int> tmpcnt = login_cnt.query(userid);
+        if (tmpcnt.empty()) {
+            login_cnt.ins(userid, 1);
+        }
+        else {
+            int cnt = login_cnt.query(userid)[0];
+            login_cnt.del(userid, cnt);
+            login_cnt.ins(userid, cnt + 1);
+        }
         loginstack[++tp] = userid;
         nw_user = id;
     }
@@ -34,7 +40,9 @@ namespace gifbmp {
             return;
         }
         Index30 userid = loginstack[tp];
-        int cnt = login_cnt.query(userid)[0];
+        std::vector<int> tmpcnt = login_cnt.query(userid);
+        assert(!tmpcnt.empty());
+        int cnt = tmpcnt[0];
         assert(cnt >= 1);
         login_cnt.del(userid, cnt);
         login_cnt.ins(userid, cnt - 1);
