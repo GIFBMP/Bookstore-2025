@@ -58,7 +58,7 @@ int main() {
         //std::cerr << "***";
         std::string s;
         getline(std::cin, s);
-        std::cerr << s << '\n';
+        //std::cerr << s << '\n';
         v = proceed(s);
         if (v.empty()) continue;
         else if (v[0] == "exit" || v[0] == "quit") {
