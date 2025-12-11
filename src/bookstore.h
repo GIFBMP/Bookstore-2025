@@ -17,12 +17,12 @@ namespace gifbmp {
             for (int i = 0; i <= len; i++)
                 s[i] = t.s[i];
         }
-        Index(string str) {
+        Index(const string &str) {
             int sz = str.size();
             for (int i = 0; i < sz; i++) s[i] = str[i];
             for (int i = sz; i <= len; i++) s[i] = 0;
         }
-        bool empty() {
+        bool empty() const {
             return s[0] == '\0';
         }
         bool operator < (const Index &t) const {
@@ -88,9 +88,16 @@ namespace gifbmp {
     int tp = 0;
     userindata nw_user;
     void initialise() {
-
+        Index30 userid = (string)"root";
+        std::vector<userindata> v = list_of_users.query(userid);
+        if (v.empty()) {
+            userindata tmp;
+            tmp.password = (string)"sjtu";
+            tmp.privilege = 7;
+            list_of_users.ins(userid, tmp);
+        } 
     }
-    void user_register();
+    void user_register(Index30, Index30, Index30);
     void login(Index30, Index30);
     void logout();
     void chgpassword(Index30, Index30, Index30);
@@ -102,10 +109,10 @@ namespace gifbmp {
         Index60 name, author;
         Index60 keyword;
         int cnt;
-        double price, totalcost;
+        double price;
         Book() {
             cnt = 0;
-            price = totalcost = 0;
+            price = 0;
         }
         bool operator < (const Book &t) const {
             return ISBN < t.ISBN;
@@ -121,10 +128,19 @@ namespace gifbmp {
     void showname(const Index60 &);
     void showauthor(const Index60 &);
     void showkeyword(const Index60 &);
-    void buy(const Index20 &, int cnt);
+    void buy(const Index20 &, int);
     void select(const Index20 &);
     void modify(const Index20 &, const Index60 &, \
-                const Index60 &, const Index60 &, double);
+                const Index60 &, const Index60 &, double, bool);
     void import(int, double);
+    
+    struct finance {
+        double income, outcome;
+        finance(double income = 0.0, double outcome = 0.0) :
+            income(income), outcome(outcome) {}
+    };
+    DataSaver<finance, 0> finance_log("finance_log", 0);//reserve
+    void show_finance_all();
+    void show_finance(int);
 }
 #endif

@@ -1,4 +1,5 @@
 #include "bookstore.h"
+#include <unordered_map>
 namespace gifbmp {
     bool is_selected = 0;
     Book selectedbook;
@@ -80,27 +81,33 @@ namespace gifbmp {
         book_isbn.del(bk.ISBN, bk);
         book_name.del(bk.name, bk);
         book_author.del(bk.author, bk);
-        std::vector<std::string> s;
         int len = strlen(bk.keyword.s);
         std::string str = "";
         for (int i = 0; i < len; i++) {
             if (bk.keyword.s[i] == '|') {
                 book_keyword.del(str, bk);
-                s.push_back (str);
                 str = "";
             }
             else str += bk.keyword.s[i];
         }
         if (str != "") {
             book_keyword.del(str, bk);
-            s.push_back(str);
         }
         str = "";
-        book_isbn.ins(bk.ISBN, newbk);
-        book_name.ins(bk.name, newbk);
-        book_author.ins(bk.author, newbk);
-        for (auto tmp : s)
-            book_keyword.ins(tmp, newbk);
+
+        book_isbn.ins(newbk.ISBN, newbk);
+        book_name.ins(newbk.name, newbk);
+        book_author.ins(newbk.author, newbk);
+        for (int i = 0; i < len; i++) {
+            if (newbk.keyword.s[i] == '|') {
+                book_keyword.ins(str, newbk);
+                str = "";
+            }
+            else str += newbk.keyword.s[i];
+        }
+        if (str != "") {
+            book_keyword.ins(str, newbk);
+        }
     }
     void buy(const Index20 &isbn, int cnt) {
         if (nw_user.privilege < 1 || cnt <= 0) {
@@ -115,6 +122,8 @@ namespace gifbmp {
         Book tmp = v[0];
         tmp.cnt -= cnt;
         upd(v[0], tmp);
+        finance profit = finance(tmp.price * cnt, 0.0);
+        finance_log.write(profit);
     }
     void select(const Index20 &isbn) {
         if (nw_user.privilege < 3) {
@@ -132,17 +141,63 @@ namespace gifbmp {
         selectedbook = v[0];
     }
     void modify(const Index20 &isbn, const Index60 &name, const Index60 &author, 
-                const Index60 &keyword, double price) {
-        if (nw_user.privilege < 3) {
+                const Index60 &keyword, double price, bool has_price) {
+        if (nw_user.privilege < 3 || !is_selected) {
             invalid_oper();
             return;
         }
         
+        if (!isbn.empty()) {
+            std::vector<Book> v = book_isbn.query(isbn);
+            if (!v.empty()) {
+                invalid_oper();
+                return;
+            }
+        }
+        
+        if (!keyword.empty()) {
+            std::string str = "";
+            int len = strlen(keyword.s);
+            bool fl = false;
+            std::unordered_map<std::string, bool> p;
+            for (int i = 0; i < len; i++) {
+                if (selectedbook.keyword.s[i] == '|') {
+                    if (p.count(str)) {
+                        fl = true;
+                        break;
+                    }
+                    p[str] = 1;
+                    str = "";
+                }
+                else str += selectedbook.keyword.s[i];
+            }
+            if (str != "") {
+                if (p.count(str)) fl = true;
+            }
+            if (fl == true) {
+                invalid_oper();
+                return;
+            }
+        }
+        Book tmp = selectedbook;
+        if (!isbn.empty()) tmp.ISBN = isbn;
+        if (!name.empty()) tmp.name = name;
+        if (!author.empty()) tmp.author = author;
+        if (!keyword.empty()) tmp.keyword = keyword;
+        if (has_price == true) tmp.price = price;
+        upd(selectedbook, tmp);
+        selectedbook = tmp;
     }
     void import(int cnt, double totalcost) {
-        if (nw_user.privilege < 3) {
+        if (nw_user.privilege < 3 || !is_selected || cnt <= 0 || totalcost <= 0.0) {
             invalid_oper();
             return;
         }
+        Book tmp = selectedbook;
+        tmp.cnt += cnt;
+        finance cost = finance(0.0, totalcost);
+        finance_log.write(cost);
+        upd(selectedbook, tmp);
+        selectedbook = tmp;
     }
 }

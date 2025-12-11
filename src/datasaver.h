@@ -47,6 +47,13 @@ namespace gifbmp {
             file.write(reinterpret_cast<char *>(&tmp), sizeof(int));
             file.close();
         }
+        int size() {
+            if (file.is_open())file.close();
+            file.open(file_name, fstream::app | fstream::binary);
+            int index = ((int)file.tellp() - databegin) / sizeofT + 1;
+            file.close();
+            return index - 1;
+        }
         int write(T &t) {
             if (file.is_open())file.close();
             file.open(file_name, fstream::app | fstream::binary);
