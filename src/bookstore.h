@@ -77,6 +77,12 @@ namespace gifbmp {
         bool operator < (const userindata &t) const {
             return password < t.password;
         }
+        bool operator <= (const userindata &t) const {
+            return password <= t.password;
+        }
+        bool operator == (const userindata &t) const {
+            return password == t.password;
+        }
     };
     void invalid_oper() {
         std::cout << "Invalid\n";
@@ -116,6 +122,12 @@ namespace gifbmp {
         }
         bool operator < (const Book &t) const {
             return ISBN < t.ISBN;
+        }
+        bool operator == (const Book &t) const {
+            return ISBN == t.ISBN;
+        }
+        bool operator <= (const Book &t) const {
+            return ISBN <= t.ISBN;
         }
     };
     std::ostream& operator << (std::ostream &, Book);
