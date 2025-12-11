@@ -79,6 +79,7 @@ namespace gifbmp {
             file.open(file_name, fstream::in | fstream::out | fstream::binary);
             file.seekp((n - 1) * sizeof(int));
             file.write(reinterpret_cast<char *>(&tmp), sizeof(int));
+            file.flush();
             file.close();
         }
         int write(Block &t) {
@@ -86,6 +87,7 @@ namespace gifbmp {
             file.open(file_name, fstream::app | fstream::binary);
             int index = ((int)file.tellp() - databegin) / sizeofBlock + 1;
             file.write(reinterpret_cast<char *>(&t), sizeofBlock);
+            file.flush();
             file.close();
             return index;
         }
@@ -99,6 +101,7 @@ namespace gifbmp {
                 file.open(file_name, fstream::in | fstream::out | fstream::binary);
             file.seekp((index - 1) * sizeofBlock + databegin);
             file.write(reinterpret_cast<char *>(&t), sizeofBlock);
+            file.flush();
         }
         void read(Block &t, int index) {
             if (!file.is_open())
@@ -118,6 +121,7 @@ namespace gifbmp {
             file.seekp((index - 1) * sizeofBlock + databegin);
             Block tmp = Block();
             file.write(reinterpret_cast<char *>(&tmp), sizeofBlock);
+            file.flush();
             //file.close();
             restore[++res_cnt] = index; 
         }
@@ -258,6 +262,9 @@ namespace gifbmp {
                     std::cout << nw.data[j].b << '\n';
             }
             if (fl == false) std::cout << '\n';
+        }
+        ~BlockList() {
+            if (file.is_open()) file.close();
         }
         //List part
     };

@@ -35,7 +35,7 @@ namespace gifbmp {
     }
     void logout() {
         //std::cerr << "try to logout\n";
-        if (nw_user.privilege < 1) {
+        if (!tp || nw_user.privilege < 1) {
             invalid_oper();
             return;
         }

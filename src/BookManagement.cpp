@@ -99,8 +99,10 @@ namespace gifbmp {
         book_isbn.ins(newbk.ISBN, newbk);
         book_name.ins(newbk.name, newbk);
         book_author.ins(newbk.author, newbk);
+        len = strlen(newbk.keyword.s);
         for (int i = 0; i < len; i++) {
             if (newbk.keyword.s[i] == '|') {
+                //std::cerr << "bookisbn:" << newbk.ISBN << ",keyword:" << str << "\n";
                 book_keyword.ins(str, newbk);
                 str = "";
             }

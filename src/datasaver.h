@@ -46,6 +46,7 @@ namespace gifbmp {
             file.open(file_name, fstream::in | fstream::out | fstream::binary);
             file.seekp((n - 1) * sizeof(int));
             file.write(reinterpret_cast<char *>(&tmp), sizeof(int));
+            file.flush();
             file.close();
         }
         int size() {
@@ -60,6 +61,7 @@ namespace gifbmp {
             file.open(file_name, fstream::app | fstream::binary);
             int index = ((int)file.tellp() - databegin) / sizeofT + 1;
             file.write(reinterpret_cast<char *>(&t), sizeofT);
+            file.flush();
             file.close();
             return index;
         }
@@ -71,6 +73,7 @@ namespace gifbmp {
                 file.open(file_name, fstream::in | fstream::out | fstream::binary);
             file.seekp((index - 1) * sizeofT + databegin);
             file.write(reinterpret_cast<char *>(&t), sizeofT);
+            file.flush();
         }
         void read(T &t, int index) {
             if (!file.is_open())
