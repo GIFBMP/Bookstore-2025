@@ -169,7 +169,7 @@ namespace gifbmp {
             bool fl = false;
             std::unordered_map<std::string, bool> p;
             for (int i = 0; i < len; i++) {
-                if (selectedbook.keyword.s[i] == '|') {
+                if (keyword.s[i] == '|') {
                     if (p.count(str)) {
                         fl = true;
                         break;
@@ -177,7 +177,7 @@ namespace gifbmp {
                     p[str] = 1;
                     str = "";
                 }
-                else str += selectedbook.keyword.s[i];
+                else str += keyword.s[i];
             }
             if (str != "") {
                 if (p.count(str)) fl = true;
