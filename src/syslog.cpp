@@ -29,7 +29,9 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
-        int sz = finance_log.size();
-        show_finance(sz);
+        double income, outcome;
+        profits.read(income, 1);
+        profits.read(outcome, 2);
+        std::cout << std::fixed << std::setprecision(2) << "+ " << income << " - " << outcome << '\n';
     }
 }

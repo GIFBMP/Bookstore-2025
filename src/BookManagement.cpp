@@ -124,6 +124,10 @@ namespace gifbmp {
         upd(v[0], tmp);
         finance profit = finance(tmp.price * cnt, 0.0);
         finance_log.write(profit);
+        double inc;
+        profits.read(inc, 1);
+        inc += tmp.price * cnt;
+        profits.update(inc, 1);
     }
     void select(const Index20 &isbn) {
         if (nw_user.privilege < 3) {
@@ -197,6 +201,10 @@ namespace gifbmp {
         tmp.cnt += cnt;
         finance cost = finance(0.0, totalcost);
         finance_log.write(cost);
+        double ouc;
+        profits.read(ouc, 2);
+        ouc += totalcost;
+        profits.update(ouc, 2);
         upd(selectedbook, tmp);
         selectedbook = tmp;
     }

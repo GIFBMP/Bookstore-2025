@@ -6,7 +6,7 @@ std::vector<string> proceed(const std::string &s) {
     string str = "";
     for (int i = 0; i < len; i++) {
         if (s[i] == ' ') {
-            v.push_back (str);
+            if (str != "") v.push_back (str);
             str = "";
         }
         else str += s[i];
@@ -24,41 +24,117 @@ int stringtoint(const string &s) {
             x = x * 10 + s[i] - '0';
     return x;
 }
+bool checkint(const string &s) {
+    int len = s.size();
+    for (int i = 0; i < len; i++) {
+        if ((s[i] < '0' || s[i] > '9') && (i > 0 || s[i] != '-'))
+            return false;
+    }
+    return true;
+}
+bool checkdouble(const string &s) {
+    int len = s.size(), cnt = 0;
+    for (int i = 0; i < len; i++) {
+        if (s[i] == '.') {
+            if (i == 0) return false;
+            else {
+                cnt++;
+                if (cnt > 1) return false;
+            }
+        }
+        else if ((s[i] < '0' || s[i] > '9') && (i > 0 || s[i] != '-'))
+            return false;
+    }
+    return true;
+}
 double stringtodouble(const string &s) {
     return std::stod(s);
 }
 int main() {
     std::vector<std::string> v;
+    //std::cerr << "clear ends\n";
     initialise();
     while (1) {
+        //std::cerr << "***";
         std::string s;
         getline(std::cin, s);
+        std::cerr << s << '\n';
         v = proceed(s);
         if (v.empty()) continue;
-        else if (v[0] == "exit" || v[0] == "quit") break;
+        else if (v[0] == "exit" || v[0] == "quit") {
+            if (v.size() != 1) {
+                invalid_oper();
+                continue;
+            }
+            break;
+        }
         else if (v[0] == "su") {
+            if (v.size() < 2 || v.size() > 3) {
+                invalid_oper();
+                continue;
+            }
             Index30 userid, password;
             userid = v[1];
-            if (v.size() > 2) password = v[2];
+            if (v.size() == 3) password = v[2];
             else password = Index30();
             login(userid, password);
         }
-        else if (v[0] == "logout") logout();
+        else if (v[0] == "logout") {
+            if (v.size() != 1) {
+                invalid_oper();
+                continue;
+            }
+            logout();
+        }
+        else if (v[0] == "passwd") {
+            if (v.size() < 3 || v.size() > 4) {
+                invalid_oper();
+                continue;
+            }
+            Index30 current_password, new_password;
+            if (v.size() == 3) new_password = v[2];
+            else if (v.size() == 4) current_password = v[2], new_password = v[3];
+            chgpassword(v[1], current_password, new_password);
+        }
         else if (v[0] == "register") {
+            if (v.size() != 4) {
+                invalid_oper();
+                continue;
+            }
             user_register(v[1], v[2], v[3]);
         }
         else if (v[0] == "useradd") {
+            if (v.size() != 5) {
+                invalid_oper();
+                continue;
+            }
             useradd(v[1], v[2], stringtoint(v[3]), v[4]);
         }
         else if (v[0] == "delete") {
+            if (v.size() != 2) {
+                invalid_oper();
+                continue;
+            } 
             deluser(v[1]);
         }
         else if (v[0] == "show") {
+            if (v.size() == 1) {
+                book_isbn.printall();
+                continue;
+            }
             string tmp;
             int len = v[1].size();
             if (v[1] == "finance") {//show finance
-                if (v.size() > 2) show_finance(stringtoint(v[2]));
+                if (v.size() > 3) {
+                    invalid_oper();
+                    continue;
+                }
+                if (v.size() == 3) show_finance(stringtoint(v[2]));
                 else show_finance_all();
+            }
+            else if (v.size() != 2) {
+                invalid_oper();
+                continue;
             }
             else if (v[1][1] == 'I') {//isbn
                 for (int i = 6; i < len; i++) tmp += v[1][i];
@@ -78,9 +154,21 @@ int main() {
             }
         }
         else if (v[0] == "buy") {
+            if (v.size() != 3) {
+                invalid_oper();
+                continue;
+            }
+            if (!checkint(v[2])) {
+                invalid_oper();
+                continue;
+            }
             buy(v[1], stringtoint(v[2]));
         }
         else if (v[0] == "select") {
+            if (v.size() != 2) {
+                invalid_oper();
+                continue;
+            }
             select(v[1]);
         }
         else if (v[0] == "modify") {
@@ -137,11 +225,30 @@ int main() {
             }
             modify(isbn, name, author, keyword, price, has_price);
         }
+        else if (v[0] == "import") {
+            if (v.size() != 3) {
+                invalid_oper();
+                continue;
+            }
+            if (!checkint(v[1])) {
+                invalid_oper();
+                continue;
+            }
+            if (!checkdouble(v[2])) {
+                invalid_oper();
+                continue;
+            }
+            import(stringtoint(v[1]), stringtodouble(v[2]));
+        }
         else if (v[0] == "log") {//todo
 
         }
         else if (v[0] == "report") {//todo
 
+        }
+        else {
+            invalid_oper();
+            continue;
         }
     }
     return 0;

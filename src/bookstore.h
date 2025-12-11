@@ -84,25 +84,14 @@ namespace gifbmp {
             return password == t.password;
         }
     };
-    void invalid_oper() {
-        std::cout << "Invalid\n";
-        return;
-    }
-    BlockList<Index30, userindata> list_of_users("userlist", 0);
-    BlockList<Index30, int> login_cnt("login_cnt", 1);//clear the login_cnt
-    Index30 loginstack[kMaxn];
-    int tp = 0;
-    userindata nw_user;
-    void initialise() {
-        Index30 userid = (string)"root";
-        std::vector<userindata> v = list_of_users.query(userid);
-        if (v.empty()) {
-            userindata tmp;
-            tmp.password = (string)"sjtu";
-            tmp.privilege = 7;
-            list_of_users.ins(userid, tmp);
-        } 
-    }
+    void invalid_oper();
+    extern BlockList<Index30, userindata> list_of_users;
+    extern BlockList<Index30, int> login_cnt;//clear the login_cnt
+    extern Index30 loginstack[kMaxn];
+    extern int tp;
+    extern userindata nw_user;
+    void initialise();
+
     void user_register(Index30, Index30, Index30);
     void login(Index30, Index30);
     void logout();
@@ -131,10 +120,10 @@ namespace gifbmp {
         }
     };
     std::ostream& operator << (std::ostream &, Book);
-    BlockList<Index20, Book> book_isbn("book_isbn", 0);
-    BlockList<Index60, Book> book_name("book_name", 0);
-    BlockList<Index60, Book> book_author("book_author", 0);
-    BlockList<Index60, Book> book_keyword("book_keyword", 0);
+    extern BlockList<Index20, Book> book_isbn;
+    extern BlockList<Index60, Book> book_name;
+    extern BlockList<Index60, Book> book_author;
+    extern BlockList<Index60, Book> book_keyword;
     void showall();
     void showisbn(const Index20 &);
     void showname(const Index60 &);
@@ -151,7 +140,8 @@ namespace gifbmp {
         finance(double income = 0.0, double outcome = 0.0) :
             income(income), outcome(outcome) {}
     };
-    DataSaver<finance, 0> finance_log("finance_log", 0);//reserve
+    extern DataSaver<finance, 0> finance_log;//reserve
+    extern DataSaver<double, 0> profits;
     void show_finance_all();
     void show_finance(int);
 }

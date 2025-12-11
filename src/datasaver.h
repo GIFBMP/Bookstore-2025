@@ -25,6 +25,7 @@ namespace gifbmp {
             if (FN != "") file_name = FN;
             else return;
             if (isFileExists(FN) && !typ) return;
+            if (file.is_open()) file.close();
             file.open(file_name, fstream::out | fstream::binary);
             int tmp = 0;
             for (int i = 0; i < info_len; ++i)
