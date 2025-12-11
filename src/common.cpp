@@ -17,6 +17,8 @@ namespace gifbmp {
 
     Index30 loginstack[kMaxn];
     int tp = 0;
+    bool is_selected[kMaxn];
+    Book selectedbook[kMaxn];
     userindata nw_user = userindata();
     void invalid_oper() {
         std::cout << "Invalid\n";

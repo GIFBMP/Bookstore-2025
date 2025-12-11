@@ -39,6 +39,8 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        is_selected[tp] = 0;
+        selectedbook[tp] = Book();
         Index30 userid = loginstack[tp];
         std::vector<int> tmpcnt = login_cnt.query(userid);
         assert(!tmpcnt.empty());

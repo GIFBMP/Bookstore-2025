@@ -2,8 +2,7 @@
 #include <iomanip>
 #include <unordered_map>
 namespace gifbmp {
-    bool is_selected = 0;
-    Book selectedbook;
+    
     std::ostream& operator << (std::ostream &out, Book x) {
         out << x.ISBN << '\t' << x.name << '\t' << x.author << '\t' << x.keyword << '\t'\
             << std::fixed << std::setprecision(2) << x.price << '\t' << x.cnt;
@@ -118,6 +117,9 @@ namespace gifbmp {
             return;
         }
         std::vector<Book> v = book_isbn.query(isbn);
+        // if (!v.empty()) {
+        //     //std::cout << "cnt:" << cnt << ",remain:" << v[0].cnt << '\n';
+        // }
         if (v.empty() || cnt > v[0].cnt) {
             invalid_oper();
             return;
@@ -138,19 +140,20 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
-        is_selected = 1;
+        is_selected[tp] = 1;
         std::vector<Book> v = book_isbn.query(isbn);
+        std::cerr << "now_selected " << "isbn:" << isbn << '\n';
         if (v.empty()) {
-            selectedbook = Book();
-            selectedbook.ISBN = isbn;
-            book_isbn.ins(isbn, selectedbook);
+            selectedbook[tp] = Book();
+            selectedbook[tp].ISBN = isbn;
+            book_isbn.ins(isbn, selectedbook[tp]);
             return;
         }
-        selectedbook = v[0];
+        selectedbook[tp] = v[0];
     }
     void modify(const Index20 &isbn, const Index60 &name, const Index60 &author, 
                 const Index60 &keyword, double price, bool has_price) {
-        if (nw_user.privilege < 3 || !is_selected) {
+        if (nw_user.privilege < 3 || !is_selected[tp]) {
             invalid_oper();
             return;
         }
@@ -187,21 +190,26 @@ namespace gifbmp {
                 return;
             }
         }
-        Book tmp = selectedbook;
+        Book tmp = selectedbook[tp], tmp2 = tmp;
         if (!isbn.empty()) tmp.ISBN = isbn;
         if (!name.empty()) tmp.name = name;
         if (!author.empty()) tmp.author = author;
         if (!keyword.empty()) tmp.keyword = keyword;
         if (has_price == true) tmp.price = price;
-        upd(selectedbook, tmp);
-        selectedbook = tmp;
+        upd(selectedbook[tp], tmp);
+        for (int i = tp; i; i--) {
+            if (!is_selected[i]) continue;
+            if (selectedbook[i] == tmp2)
+                selectedbook[i] = tmp;
+        }
     }
     void import(int cnt, double totalcost) {
-        if (nw_user.privilege < 3 || !is_selected || cnt <= 0 || totalcost <= 0.0) {
+        if (nw_user.privilege < 3 || !is_selected[tp] || cnt <= 0 || totalcost <= 0.0) {
             invalid_oper();
             return;
         }
-        Book tmp = selectedbook;
+        std::cerr << "import isbn:" << selectedbook[tp].ISBN << ",cnt:" << cnt << '\n'; 
+        Book tmp = selectedbook[tp];
         tmp.cnt += cnt;
         finance cost = finance(0.0, totalcost);
         finance_log.write(cost);
@@ -209,7 +217,7 @@ namespace gifbmp {
         profits.read(ouc, 2);
         ouc += totalcost;
         profits.update(ouc, 2);
-        upd(selectedbook, tmp);
-        selectedbook = tmp;
+        upd(selectedbook[tp], tmp);
+        selectedbook[tp] = tmp;
     }
 }

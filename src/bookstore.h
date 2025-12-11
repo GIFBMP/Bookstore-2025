@@ -124,6 +124,8 @@ namespace gifbmp {
     extern BlockList<Index60, Book> book_name;
     extern BlockList<Index60, Book> book_author;
     extern BlockList<Index60, Book> book_keyword;
+    extern bool is_selected[kMaxn];
+    extern Book selectedbook[kMaxn];
     void showall();
     void showisbn(const Index20 &);
     void showname(const Index60 &);

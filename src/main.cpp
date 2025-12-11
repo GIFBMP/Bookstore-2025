@@ -57,7 +57,7 @@ int main() {
     std::string s;
     while (getline(std::cin, s)) {
         //std::cerr << "***";
-        //std::cerr << s << '\n';
+        //if (s[0] == 'b')std::cout << s << '\n';
         v = proceed(s);
         if (v.empty()) continue;
         else if (v[0] == "exit" || v[0] == "quit") {
