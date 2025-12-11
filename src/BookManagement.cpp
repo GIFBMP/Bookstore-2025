@@ -1,4 +1,5 @@
 #include "bookstore.h"
+#include <iomanip>
 #include <unordered_map>
 namespace gifbmp {
     bool is_selected = 0;
@@ -123,6 +124,7 @@ namespace gifbmp {
         tmp.cnt -= cnt;
         upd(v[0], tmp);
         finance profit = finance(tmp.price * cnt, 0.0);
+        std::cout << std::fixed << std::setprecision(2) << tmp.price * cnt << '\n';
         finance_log.write(profit);
         double inc;
         profits.read(inc, 1);

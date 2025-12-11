@@ -34,7 +34,9 @@ namespace gifbmp {
             list_of_users.ins(userid, tmp);
             login_cnt.ins(userid, 0);
         }
+        std::cerr << "profits_size:" << profits.size() << '\n';
         if (profits.size() == 0) {
+            std::cerr << "write into profit\n";
             double a = 0.0;
             profits.write(a);
             profits.write(a);

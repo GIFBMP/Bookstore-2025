@@ -65,8 +65,6 @@ namespace gifbmp {
         }
         DataSaver(const string& file_name, bool typ = 1) {
             initialise(file_name, typ);
-            T tmp = T();
-            write(tmp);
         }
         void update(T &t, int index) {
             if (!file.is_open())
