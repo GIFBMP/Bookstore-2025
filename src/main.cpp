@@ -54,11 +54,10 @@ int main() {
     std::vector<std::string> v;
     //std::cerr << "clear ends\n";
     initialise();
-    while (1) {
+    std::string s;
+    while (getline(std::cin, s)) {
         //std::cerr << "***";
-        std::string s;
-        getline(std::cin, s);
-        //std::cerr << s << '\n';
+        std::cerr << s << '\n';
         v = proceed(s);
         if (v.empty()) continue;
         else if (v[0] == "exit" || v[0] == "quit") {
