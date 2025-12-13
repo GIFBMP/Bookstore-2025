@@ -98,6 +98,10 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        if (privilege != 1 && privilege != 3 && privilege != 7) {
+            invalid_oper();
+            return;
+        }
         std::vector<userindata> isreg = list_of_users.query(userid);
         std::cerr << isreg.size() << '\n';
         if (!isreg.empty()) {

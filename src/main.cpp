@@ -22,6 +22,7 @@ int stringtoint(const string &s) {
     for (int i = 0; i < len; i++)
         if (s[i] >= '0' && s[i] <= '9')
             x = x * 10 + s[i] - '0';
+    if (fl) x = -x;
     return x;
 }
 bool checkint(const string &s) {
@@ -30,6 +31,8 @@ bool checkint(const string &s) {
         if ((s[i] < '0' || s[i] > '9') && (i > 0 || s[i] != '-'))
             return false;
     }
+    if (len > 1 && s[0] == '0') return false;
+    if (len > 2 && s[0] == '-' && s[1] == '0') return false;
     return true;
 }
 bool checkdouble(const string &s) {
@@ -49,6 +52,17 @@ bool checkdouble(const string &s) {
 }
 double stringtodouble(const string &s) {
     return std::stod(s);
+}
+bool checkpwd(const string &s) {
+    int len = s.size();
+    if (len > 30) return false;
+    for (int i = 0; i < len; i++)
+        if (s[i] >= '0' && s[i] <= '9') continue;
+        else if (s[i] >= 'a' && s[i] <= 'z') continue;
+        else if (s[i] >= 'A' && s[i] <= 'Z') continue;
+        else if (s[i] == '_') continue;
+        else return false;
+    return true;
 }
 int main() {
     std::vector<std::string> v;
@@ -73,8 +87,18 @@ int main() {
                 continue;
             }
             Index30 userid, password;
+            if (!checkpwd(v[1])) {
+                invalid_oper();
+                continue;
+            }
             userid = v[1];
-            if (v.size() == 3) password = v[2];
+            if (v.size() == 3) {
+                if (!checkpwd(v[2])) {
+                    invalid_oper();
+                    continue;
+                }
+                password = v[2];
+            }
             else password = Index30();
             login(userid, password);
         }
@@ -91,12 +115,24 @@ int main() {
                 continue;
             }
             Index30 current_password, new_password;
+            if (!checkpwd(v[2])) {
+                invalid_oper();
+                continue;
+            }
+            if (v.size() == 4 && !checkpwd(v[3])) {
+                invalid_oper();
+                continue;
+            }
             if (v.size() == 3) new_password = v[2];
             else if (v.size() == 4) current_password = v[2], new_password = v[3];
             chgpassword(v[1], current_password, new_password);
         }
         else if (v[0] == "register") {
             if (v.size() != 4) {
+                invalid_oper();
+                continue;
+            }
+            if (!checkpwd(v[1]) || !checkpwd(v[2])) {
                 invalid_oper();
                 continue;
             }
@@ -107,13 +143,21 @@ int main() {
                 invalid_oper();
                 continue;
             }
+            if (!checkpwd(v[1]) || !checkpwd(v[2]) || !checkint(v[3])) {
+                invalid_oper();
+                continue;
+            }
             useradd(v[1], v[2], stringtoint(v[3]), v[4]);
         }
         else if (v[0] == "delete") {
             if (v.size() != 2) {
                 invalid_oper();
                 continue;
-            } 
+            }
+            if (!checkpwd(v[1])) {
+                invalid_oper();
+                continue;
+            }
             deluser(v[1]);
         }
         else if (v[0] == "show") {
@@ -135,20 +179,40 @@ int main() {
                 invalid_oper();
                 continue;
             }
+            else if (len < 2) {
+                invalid_oper();
+                continue;
+            }
             else if (v[1][1] == 'I') {//isbn
                 for (int i = 6; i < len; i++) tmp += v[1][i];
+                if (tmp.size() > 20) {
+                    invalid_oper();
+                    continue;
+                }
                 showisbn(tmp);
             }
             else if (v[1][1] == 'n') {//name
                 for (int i = 7; i < len - 1; i++) tmp += v[1][i];
+                if (tmp.size() > 60) {
+                    invalid_oper();
+                    continue;
+                }
                 showname(tmp);
             }
             else if (v[1][1] == 'a') {//author
                 for (int i = 9; i < len - 1; i++) tmp += v[1][i];
+                if (tmp.size() > 60) {
+                    invalid_oper();
+                    continue;
+                }
                 showauthor(tmp);
             }
             else if (v[1][1] == 'k') {//keyword
                 for (int i = 10; i < len - 1; i++) tmp += v[1][i];
+                if (tmp.size() > 60) {
+                    invalid_oper();
+                    continue;
+                }
                 showkeyword(tmp);
             }
         }
