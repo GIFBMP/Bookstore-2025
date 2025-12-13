@@ -134,6 +134,10 @@ int main() {
                 continue;
             }
             Index30 current_password, new_password;
+            if (!checkpwd(v[1])) {
+                invalid_oper();
+                continue;
+            }
             if (!checkpwd(v[2])) {
                 invalid_oper();
                 continue;
@@ -151,7 +155,7 @@ int main() {
                 invalid_oper();
                 continue;
             }
-            if (!checkpwd(v[1]) || !checkpwd(v[2])) {
+            if (!checkpwd(v[1]) || !checkpwd(v[2]) || v[3].size() > 30) {
                 invalid_oper();
                 continue;
             }
@@ -162,7 +166,7 @@ int main() {
                 invalid_oper();
                 continue;
             }
-            if (!checkpwd(v[1]) || !checkpwd(v[2]) || !checkint(v[3])) {
+            if (!checkpwd(v[1]) || !checkpwd(v[2]) || !checkint(v[3]) || v[4].size() > 30) {
                 invalid_oper();
                 continue;
             }
@@ -191,7 +195,13 @@ int main() {
                     invalid_oper();
                     continue;
                 }
-                if (v.size() == 3) show_finance(stringtoint(v[2]));
+                if (v.size() == 3) {
+                    if (!checkint(v[2])) {
+                        invalid_oper();
+                        continue;
+                    }
+                    show_finance(stringtoint(v[2]));
+                }
                 else show_finance_all();
             }
             else if (v.size() != 2) {
@@ -240,6 +250,10 @@ int main() {
                 invalid_oper();
                 continue;
             }
+            if (!v[1].size() > 20) {
+                invalid_oper();
+                continue;
+            }
             if (!checkint(v[2])) {
                 invalid_oper();
                 continue;
@@ -248,6 +262,10 @@ int main() {
         }
         else if (v[0] == "select") {
             if (v.size() != 2) {
+                invalid_oper();
+                continue;
+            }
+            if (v[1].size() > 20) {
                 invalid_oper();
                 continue;
             }
