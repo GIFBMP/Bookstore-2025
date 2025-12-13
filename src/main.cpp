@@ -213,6 +213,11 @@ int main() {
                 continue;
             }
             else if (v[1][1] == 'I') {//isbn
+                string ord = v[1].substr(0, 6);
+                if (ord != "-ISBN=") {
+                    invalid_oper();
+                    continue;
+                }
                 for (int i = 6; i < len; i++) tmp += v[1][i];
                 if (tmp.size() > 20) {
                     invalid_oper();
@@ -221,6 +226,11 @@ int main() {
                 showisbn(tmp);
             }
             else if (v[1][1] == 'n') {//name
+                string ord = v[1].substr(0, 7);
+                if (ord != "-name=\"" || v[1][len - 1] != '\"') {
+                    invalid_oper();
+                    continue;
+                }
                 for (int i = 7; i < len - 1; i++) tmp += v[1][i];
                 if (!checkname(tmp)) {
                     invalid_oper();
@@ -229,6 +239,11 @@ int main() {
                 showname(tmp);
             }
             else if (v[1][1] == 'a') {//author
+                string ord = v[1].substr(0, 9);
+                if (ord != "-author=\"" || v[1][len - 1] != '\"') {
+                    invalid_oper();
+                    continue;
+                }
                 for (int i = 9; i < len - 1; i++) tmp += v[1][i];
                 if (!checkname(tmp)) {
                     invalid_oper();
@@ -237,6 +252,11 @@ int main() {
                 showauthor(tmp);
             }
             else if (v[1][1] == 'k') {//keyword
+                string ord = v[1].substr(0, 10);
+                if (ord != "-keyword=\"" || v[1][len - 1] != '\"') {
+                    invalid_oper();
+                    continue;
+                }
                 for (int i = 10; i < len - 1; i++) tmp += v[1][i];
                 if (!checkkeyword(tmp)) {
                     invalid_oper();
@@ -244,13 +264,17 @@ int main() {
                 }
                 showkeyword(tmp);
             }
+            else {
+                invalid_oper();
+                continue;
+            }
         }
         else if (v[0] == "buy") {
             if (v.size() != 3) {
                 invalid_oper();
                 continue;
             }
-            if (!v[1].size() > 20) {
+            if (v[1].size() > 20) {
                 invalid_oper();
                 continue;
             }
@@ -281,7 +305,16 @@ int main() {
             for (int i = 1; i < len; i++) {
                 tmp = "";
                 int sz = v[i].size();
-                if (v[i][1] == 'I') {
+                if (sz < 2) {
+                    fl = true;
+                    break;
+                }
+                else if (v[i][1] == 'I') {
+                    string ord = v[i].substr(0, 6);
+                    if (ord != "-ISBN=") {
+                        fl = true;
+                        break;
+                    }
                     if (!isbn.empty()) fl = true;
                     else {
                         for (int j = 6; j < sz; j++) tmp += v[i][j];
@@ -289,6 +322,11 @@ int main() {
                     }
                 }
                 else if (v[i][1] == 'n') {
+                    string ord = v[i].substr(0, 7);
+                    if (ord != "-name=\"" || v[i][sz - 1] != '\"') {
+                        fl = true;
+                        break;
+                    }
                     if (!name.empty()) fl = true;
                     else {
                         for (int j = 7; j < sz - 1; j++) tmp += v[i][j];
@@ -300,6 +338,11 @@ int main() {
                     }
                 }
                 else if (v[i][1] == 'a') {
+                    string ord = v[i].substr(0, 9);
+                    if (ord != "-author=\"" || v[i][sz - 1] != '\"') {
+                        fl = true;
+                        break;
+                    }
                     if (!author.empty()) fl = true;
                     else {
                         for (int j = 9; j < sz - 1; j++) tmp += v[i][j];
@@ -311,6 +354,11 @@ int main() {
                     }
                 }
                 else if (v[i][1] == 'k') {
+                    string ord = v[i].substr(0, 10);
+                    if (ord != "-keyword=\"" || v[i][sz - 1] != '\"') {
+                        fl = true;
+                        break;
+                    }
                     if (!keyword.empty()) fl = true;
                     else {
                         for (int j = 10; j < sz - 1; j++) tmp += v[i][j];
@@ -322,6 +370,11 @@ int main() {
                     }
                 }
                 else if (v[i][1] == 'p') {
+                    string ord = v[i].substr(0, 7);
+                    if (ord != "-price=") {
+                        fl = true;
+                        break;
+                    }
                     if (has_price) fl = true;
                     else {
                         for (int j = 7; j < sz; j++) tmp += v[i][j];
@@ -333,6 +386,7 @@ int main() {
                         has_price = true;
                     }
                 }
+                else fl = true;
                 if (fl == true) break;
             }
             if (fl == true) {
