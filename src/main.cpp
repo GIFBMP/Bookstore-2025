@@ -37,17 +37,21 @@ bool checkint(const string &s) {
 }
 bool checkdouble(const string &s) {
     int len = s.size(), cnt = 0;
+    int poi_pos = len + 1;
     for (int i = 0; i < len; i++) {
         if (s[i] == '.') {
-            if (i == 0) return false;
+            if (i == 0 || (i == 1 && s[0] == '-')) return false;
             else {
                 cnt++;
+                poi_pos = i;
                 if (cnt > 1) return false;
             }
         }
         else if ((s[i] < '0' || s[i] > '9') && (i > 0 || s[i] != '-'))
             return false;
     }
+    if (len > 1 && s[0] == '0' && poi_pos > 1) return false;
+    if (len > 2 && s[0] == '-' && s[1] == '0' && poi_pos > 2) return false;
     return true;
 }
 double stringtodouble(const string &s) {
@@ -62,6 +66,21 @@ bool checkpwd(const string &s) {
         else if (s[i] >= 'A' && s[i] <= 'Z') continue;
         else if (s[i] == '_') continue;
         else return false;
+    return true;
+}
+bool checkname(const string &s) {
+    int len = s.size();
+    if (len > 60) return false;
+    for (int i = 0; i < len; i++)
+        if (s[i] == '\"') return false;
+    return true;
+}
+bool checkkeyword(const string &s) {
+    if (!checkname(s)) return false;
+    int len = s.size();
+    if (s[0] == '|' || s[len - 1] == '|') return false;
+    for (int i = 0; i < len; i++)
+        if (s[i] == '|' && s[i + 1] == '|') return false;
     return true;
 }
 int main() {
@@ -193,7 +212,7 @@ int main() {
             }
             else if (v[1][1] == 'n') {//name
                 for (int i = 7; i < len - 1; i++) tmp += v[1][i];
-                if (tmp.size() > 60) {
+                if (!checkname(tmp)) {
                     invalid_oper();
                     continue;
                 }
@@ -201,7 +220,7 @@ int main() {
             }
             else if (v[1][1] == 'a') {//author
                 for (int i = 9; i < len - 1; i++) tmp += v[1][i];
-                if (tmp.size() > 60) {
+                if (!checkname(tmp)) {
                     invalid_oper();
                     continue;
                 }
@@ -209,7 +228,7 @@ int main() {
             }
             else if (v[1][1] == 'k') {//keyword
                 for (int i = 10; i < len - 1; i++) tmp += v[1][i];
-                if (tmp.size() > 60) {
+                if (!checkkeyword(tmp)) {
                     invalid_oper();
                     continue;
                 }
@@ -255,6 +274,10 @@ int main() {
                     if (!name.empty()) fl = true;
                     else {
                         for (int j = 7; j < sz - 1; j++) tmp += v[i][j];
+                        if (!checkname(tmp)) {
+                            fl = true;
+                            break;
+                        }
                         name = tmp;
                     }
                 }
@@ -262,6 +285,10 @@ int main() {
                     if (!author.empty()) fl = true;
                     else {
                         for (int j = 9; j < sz - 1; j++) tmp += v[i][j];
+                        if (!checkname(tmp)) {
+                            fl = true;
+                            break;
+                        }
                         author = tmp;
                     }
                 }
@@ -269,6 +296,10 @@ int main() {
                     if (!keyword.empty()) fl = true;
                     else {
                         for (int j = 10; j < sz - 1; j++) tmp += v[i][j];
+                        if (!checkkeyword(tmp)) {
+                            fl = true;
+                            break;
+                        }
                         keyword = tmp;
                     }
                 }
@@ -276,6 +307,10 @@ int main() {
                     if (has_price) fl = true;
                     else {
                         for (int j = 7; j < sz; j++) tmp += v[i][j];
+                        if (!checkdouble(tmp)) {
+                            fl = true;
+                            break;
+                        }
                         price = stringtodouble(tmp);
                         has_price = true;
                     }
