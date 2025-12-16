@@ -29,7 +29,7 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
-        double income, outcome;
+        long double income, outcome;
         profits.read(income, 1);
         profits.read(outcome, 2);
         std::cout << std::fixed << std::setprecision(2) << "+ " << income << " - " << outcome << '\n';
