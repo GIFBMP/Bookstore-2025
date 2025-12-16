@@ -70,11 +70,33 @@ bool checkpwd(const string &s) {
         else return false;
     return true;
 }
+bool checkisbn(const string &s) {
+    int len = s.size();
+    if (len > 20) return false;
+    for (int i = 0; i < len; i++) {
+        if (s[i] >= 0 && s[i] <= 31) return false;
+        if (s[i] == 127) return false;
+    }
+    return true;
+}
+bool checkusrname(const string &s) {
+    int len = s.size();
+    if (len > 30) return false;
+    for (int i = 0; i < len; i++) {
+        if (s[i] >= 0 && s[i] <= 31) return false;
+        if (s[i] == 127) return false;
+    }
+    return true;
+}
 bool checkname(const string &s) {
     int len = s.size();
     if (len > 60) return false;
-    for (int i = 0; i < len; i++)
+    for (int i = 0; i < len; i++) {
         if (s[i] == '\"') return false;
+        if (s[i] >= 0 && s[i] <= 31) return false;
+        if (s[i] == 127) return false;
+    }
+        
     return true;
 }
 bool checkkeyword(const string &s) {
@@ -91,8 +113,7 @@ int main() {
     initialise();
     std::string s;
     while (getline(std::cin, s)) {
-        //std::cerr << "***";
-        //if (s[0] == 'b')std::cout << s << '\n';
+        v.clear();
         v = proceed(s);
         if (v.empty()) continue;
         else if (v[0] == "exit" || v[0] == "quit") {
@@ -169,7 +190,7 @@ int main() {
                 invalid_oper();
                 continue;
             }
-            if (!checkpwd(v[1]) || !checkpwd(v[2]) || !checkint(v[3]) || v[4].size() > 30) {
+            if (!checkpwd(v[1]) || !checkpwd(v[2]) || !checkint(v[3]) || !checkusrname(v[4])) {
                 invalid_oper();
                 continue;
             }
@@ -222,7 +243,7 @@ int main() {
                     continue;
                 }
                 for (int i = 6; i < len; i++) tmp += v[1][i];
-                if (tmp.size() > 20) {
+                if (!checkisbn(tmp)) {
                     invalid_oper();
                     continue;
                 }
@@ -321,6 +342,10 @@ int main() {
                     if (!isbn.empty()) fl = true;
                     else {
                         for (int j = 6; j < sz; j++) tmp += v[i][j];
+                        if (!checkisbn(tmp)) {
+                            fl = true;
+                            break;
+                        }
                         isbn = tmp;
                     }
                 }
