@@ -27,6 +27,7 @@ int stringtoint(const string &s) {
 }
 bool checkint(const string &s) {
     int len = s.size();
+    if (len > 10) return false;
     for (int i = 0; i < len; i++) {
         if ((s[i] < '0' || s[i] > '9') && (i > 0 || s[i] != '-'))
             return false;
@@ -37,6 +38,7 @@ bool checkint(const string &s) {
 }
 bool checkdouble(const string &s) {
     int len = s.size(), cnt = 0;
+    if (len > 13) return false;
     int poi_pos = len + 1;
     for (int i = 0; i < len; i++) {
         if (s[i] == '.') {
@@ -107,6 +109,7 @@ int main() {
             }
             Index30 userid, password;
             if (!checkpwd(v[1])) {
+                //std::cerr << "???";
                 invalid_oper();
                 continue;
             }
