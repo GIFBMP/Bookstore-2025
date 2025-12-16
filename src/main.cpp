@@ -209,7 +209,7 @@ int main() {
         }
         else if (v[0] == "show") {
             if (v.size() == 1) {
-                book_isbn.printall();
+                showall();
                 continue;
             }
             string tmp;

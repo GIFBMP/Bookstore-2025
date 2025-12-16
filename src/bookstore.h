@@ -73,7 +73,10 @@ namespace gifbmp {
     struct userindata {
         Index30 password;
         int privilege;
-        userindata() {privilege = 0;}
+        userindata() {
+            password = Index30("");
+            privilege = 0;
+        }
         bool operator < (const userindata &t) const {
             return password < t.password;
         }
@@ -106,6 +109,9 @@ namespace gifbmp {
         int cnt;
         double price;
         Book() {
+            ISBN = Index20("");
+            name = author = Index60("");
+            keyword = Index60("");
             cnt = 0;
             price = 0;
         }

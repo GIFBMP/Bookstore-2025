@@ -9,6 +9,7 @@ namespace gifbmp {
         return out;
     }
     void showall() {
+        //std::cerr << "priv:" << nw_user.privilege << '\n';
         if (nw_user.privilege < 1) {
             invalid_oper();
             return;
