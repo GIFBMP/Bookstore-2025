@@ -27,7 +27,7 @@ int stringtoint(const string &s) {
 }
 bool checkint(const string &s) {
     int len = s.size();
-    if (len > 10) return false;
+    if (len > 10 || !len) return false;
     for (int i = 0; i < len; i++) {
         if ((s[i] < '0' || s[i] > '9') && (i > 0 || s[i] != '-'))
             return false;
@@ -38,7 +38,7 @@ bool checkint(const string &s) {
 }
 bool checkdouble(const string &s) {
     int len = s.size(), cnt = 0;
-    if (len > 13) return false;
+    if (len > 13 || !len) return false;
     int poi_pos = len + 1;
     for (int i = 0; i < len; i++) {
         if (s[i] == '.') {
@@ -61,7 +61,7 @@ double stringtodouble(const string &s) {
 }
 bool checkpwd(const string &s) {
     int len = s.size();
-    if (len > 30) return false;
+    if (len > 30 || !len) return false;
     for (int i = 0; i < len; i++)
         if (s[i] >= '0' && s[i] <= '9') continue;
         else if (s[i] >= 'a' && s[i] <= 'z') continue;
@@ -72,7 +72,7 @@ bool checkpwd(const string &s) {
 }
 bool checkisbn(const string &s) {
     int len = s.size();
-    if (len > 20) return false;
+    if (len > 20 || !len) return false;
     for (int i = 0; i < len; i++) {
         if (s[i] >= 0 && s[i] <= 31) return false;
         if (s[i] == 127) return false;
@@ -81,7 +81,7 @@ bool checkisbn(const string &s) {
 }
 bool checkusrname(const string &s) {
     int len = s.size();
-    if (len > 30) return false;
+    if (len > 30 || !len) return false;
     for (int i = 0; i < len; i++) {
         if (s[i] >= 0 && s[i] <= 31) return false;
         if (s[i] == 127) return false;
@@ -90,7 +90,7 @@ bool checkusrname(const string &s) {
 }
 bool checkname(const string &s) {
     int len = s.size();
-    if (len > 60) return false;
+    if (len > 60 || !len) return false;
     for (int i = 0; i < len; i++) {
         if (s[i] == '\"') return false;
         if (s[i] >= 0 && s[i] <= 31) return false;

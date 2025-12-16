@@ -91,9 +91,9 @@ namespace gifbmp {
             }
             else str += bk.keyword.s[i];
         }
-        //if (str != "") {
+        if (str != "") {
             book_keyword.del(str, bk);
-        //}
+        }
         str = "";
 
         book_isbn.ins(newbk.ISBN, newbk);
@@ -108,9 +108,9 @@ namespace gifbmp {
             }
             else str += newbk.keyword.s[i];
         }
-        //if (str != "") {
+        if (str != "") {
             book_keyword.ins(str, newbk);
-        //}
+        }
     }
     void buy(const Index20 &isbn, int cnt) {
         if (nw_user.privilege < 1 || cnt <= 0) {
@@ -153,9 +153,9 @@ namespace gifbmp {
             selectedbook[tp] = Book();
             selectedbook[tp].ISBN = isbn;
             book_isbn.ins(isbn, selectedbook[tp]);
-            book_name.ins(Index60(""), selectedbook[tp]);
-            book_author.ins(Index60(""), selectedbook[tp]);
-            book_keyword.ins(Index60(""), selectedbook[tp]);
+            // book_name.ins(Index60(""), selectedbook[tp]);
+            // book_author.ins(Index60(""), selectedbook[tp]);
+            // book_keyword.ins(Index60(""), selectedbook[tp]);
             return;
         }
         selectedbook[tp] = v[0];

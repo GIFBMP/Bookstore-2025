@@ -16,7 +16,7 @@ namespace gifbmp {
             return;
         }
         finance tmp;
-        double income = 0.0, outcome = 0.0;
+        long double income = 0.0, outcome = 0.0;
         for (int i = sz; i >= sz - cnt + 1; i--) {
             finance_log.read(tmp, i);
             income += tmp.income;

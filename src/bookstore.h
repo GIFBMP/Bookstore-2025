@@ -113,7 +113,7 @@ namespace gifbmp {
             name = author = Index60("");
             keyword = Index60("");
             cnt = 0;
-            price = 0;
+            price = 0.0;
         }
         bool operator < (const Book &t) const {
             return ISBN < t.ISBN;
