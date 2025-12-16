@@ -7,7 +7,7 @@ namespace gifbmp {
             return;
         }
         int sz = finance_log.size();
-        if (cnt > sz) {
+        if (cnt > sz || cnt < 0) {
             invalid_oper();
             return;
         }
