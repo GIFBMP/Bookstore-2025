@@ -39,7 +39,7 @@ namespace gifbmp {
         std::cerr << "profits_size:" << profits.size() << '\n';
         if (profits.size() == 0) {
             std::cerr << "write into profit\n";
-            double a = 0.0;
+            long double a = 0.0;
             profits.write(a);
             profits.write(a);
         }
@@ -54,7 +54,7 @@ namespace gifbmp {
     BlockList<Index60, Book> book_keyword("book_keyword", 0);
 
     DataSaver<finance, 0> finance_log("finance_log", 0);//reserve
-    DataSaver<double, 0> profits("profit", 0);
+    DataSaver<long double, 0> profits("profit", 0);
     #else
     /*
     test version

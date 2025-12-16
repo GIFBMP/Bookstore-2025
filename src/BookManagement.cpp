@@ -131,7 +131,7 @@ namespace gifbmp {
         finance profit = finance(tmp.price * cnt, 0.0);
         std::cout << std::fixed << std::setprecision(2) << tmp.price * cnt << '\n';
         finance_log.write(profit);
-        double inc;
+        long double inc;
         profits.read(inc, 1);
         inc += tmp.price * cnt;
         profits.update(inc, 1);
@@ -222,7 +222,7 @@ namespace gifbmp {
         tmp.cnt += cnt;
         finance cost = finance(0.0, totalcost);
         finance_log.write(cost);
-        double ouc;
+        long double ouc;
         profits.read(ouc, 2);
         ouc += totalcost;
         profits.update(ouc, 2);

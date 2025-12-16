@@ -107,7 +107,7 @@ namespace gifbmp {
         Index60 name, author;
         Index60 keyword;
         int cnt;
-        double price;
+        long double price;
         Book() {
             ISBN = Index20("");
             name = author = Index60("");
@@ -144,12 +144,12 @@ namespace gifbmp {
     void import(int, double);
     
     struct finance {
-        double income, outcome;
-        finance(double income = 0.0, double outcome = 0.0) :
+        long double income, outcome;
+        finance(long double income = 0.0, long double outcome = 0.0) :
             income(income), outcome(outcome) {}
     };
     extern DataSaver<finance, 0> finance_log;//reserve
-    extern DataSaver<double, 0> profits;
+    extern DataSaver<long double, 0> profits;
     void show_finance_all();
     void show_finance(int);
 }
