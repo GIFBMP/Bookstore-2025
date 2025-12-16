@@ -439,10 +439,20 @@ int main() {
             import(stringtoint(v[1]), stringtodouble(v[2]));
         }
         else if (v[0] == "log") {//todo
-
+            if (v.size() != 1) {
+                invalid_oper();
+                continue;
+            }
         }
         else if (v[0] == "report") {//todo
-
+            if (v.size() != 2) {
+                invalid_oper();
+                continue;
+            }
+            if (v[1] != "employee" && v[1] != "finance") {
+                invalid_oper();
+                continue;
+            }
         }
         else {
             invalid_oper();
