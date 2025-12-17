@@ -6,7 +6,7 @@
 #include <iomanip>
 namespace gifbmp {
     using std::string;
-    const int kMaxn = 1e5 + 10;
+    const int kMaxn = 2e5 + 10;
     template<int len>
     struct Index {
         char s[len + 1];

@@ -179,7 +179,7 @@ int main() {
                 invalid_oper();
                 continue;
             }
-            if (!checkpwd(v[1]) || !checkpwd(v[2]) || v[3].size() > 30) {
+            if (!checkpwd(v[1]) || !checkpwd(v[2]) || !checkusrname(v[3])) {
                 invalid_oper();
                 continue;
             }
