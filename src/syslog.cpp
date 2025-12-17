@@ -46,4 +46,10 @@ namespace gifbmp {
             return;
         }
     }
+    void log() {
+        if (nw_user.privilege < 7) {
+            invalid_oper();
+            return;
+        }
+    }
 }
