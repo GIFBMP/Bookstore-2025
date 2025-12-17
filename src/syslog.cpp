@@ -34,4 +34,16 @@ namespace gifbmp {
         profits.read(outcome, 2);
         std::cout << std::fixed << std::setprecision(2) << "+ " << income << " - " << outcome << '\n';
     }
+    void report_employee() {
+        if (nw_user.privilege < 7) {
+            invalid_oper();
+            return;
+        }
+    }
+    void report_finance() {
+        if (nw_user.privilege < 7) {
+            invalid_oper();
+            return;
+        }
+    }
 }

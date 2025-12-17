@@ -443,6 +443,8 @@ int main() {
                 invalid_oper();
                 continue;
             }
+            log();
+            //std::cout << '\n';
         }
         else if (v[0] == "report") {//todo
             if (v.size() != 2) {
@@ -453,6 +455,13 @@ int main() {
                 invalid_oper();
                 continue;
             }
+            if (v[1] == "employee") {
+                report_employee();
+            }
+            else if (v[1] == "finance") {
+                report_finance();
+            }
+            //std::cout << '\n';
         }
         else {
             invalid_oper();

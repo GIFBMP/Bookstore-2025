@@ -152,5 +152,8 @@ namespace gifbmp {
     extern DataSaver<long double, 0> profits;
     void show_finance_all();
     void show_finance(int);
+    void log();
+    void report_finance();
+    void report_employee();
 }
 #endif
