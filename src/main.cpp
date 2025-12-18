@@ -28,15 +28,14 @@ long long stringtoint(const string &s) {
     if (fl) x = -x;
     return x;
 }
-bool checkint(const string &s) {
+bool checkpositiveint(const string &s) {
     int len = s.size();
     if (len > 10 || !len) return false;
     for (int i = 0; i < len; i++) {
-        if ((s[i] < '0' || s[i] > '9') && (i > 0 || s[i] != '-'))
+        if (s[i] < '0' || s[i] > '9')
             return false;
     }
     if (len > 1 && s[0] == '0') return false;
-    if (len > 2 && s[0] == '-' && s[1] == '0') return false;
     return true;
 }
 bool checkpri(const string &s) {
@@ -228,7 +227,7 @@ int main() {
                     continue;
                 }
                 if (v.size() == 3) {
-                    if (!checkint(v[2])) {
+                    if (!checkpositiveint(v[2])) {
                         invalid_oper();
                         continue;
                     }
@@ -310,7 +309,7 @@ int main() {
                 invalid_oper();
                 continue;
             }
-            if (!checkint(v[2])) {
+            if (!checkpositiveint(v[2])) {
                 invalid_oper();
                 continue;
             }
@@ -436,7 +435,7 @@ int main() {
                 invalid_oper();
                 continue;
             }
-            if (!checkint(v[1])) {
+            if (!checkpositiveint(v[1])) {
                 invalid_oper();
                 continue;
             }
