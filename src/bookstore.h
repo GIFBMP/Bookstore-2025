@@ -106,7 +106,7 @@ namespace gifbmp {
         Index20 ISBN;
         Index60 name, author;
         Index60 keyword;
-        int cnt;
+        long long cnt;
         long double price;
         Book() {
             ISBN = Index20("");
