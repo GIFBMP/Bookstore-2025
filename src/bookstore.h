@@ -140,8 +140,8 @@ namespace gifbmp {
     void buy(const Index20 &, int);
     void select(const Index20 &);
     void modify(const Index20 &, const Index60 &, \
-                const Index60 &, const Index60 &, double, bool);
-    void import(int, double);
+                const Index60 &, const Index60 &, long double, bool);
+    void import(int, long double);
     
     struct finance {
         long double income, outcome;

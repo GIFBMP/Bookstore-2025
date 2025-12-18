@@ -212,7 +212,7 @@ namespace gifbmp {
                 selectedbook[i] = tmp;
         }
     }
-    void import(int cnt, double totalcost) {
+    void import(int cnt, long double totalcost) {
         if (nw_user.privilege < 3 || !is_selected[tp] || cnt <= 0 || totalcost <= 0.0) {
             invalid_oper();
             return;
