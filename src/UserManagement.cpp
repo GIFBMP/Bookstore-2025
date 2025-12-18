@@ -70,8 +70,12 @@ namespace gifbmp {
             return;
         }
         userindata id = isreg[0];
-        if (nw_user.privilege < 7) {
-            if (current_password != id.password) {
+        if (current_password != id.password) {
+            if (nw_user.privilege < 7) {
+                invalid_oper();
+                return;
+            }
+            else if (!current_password.empty()) {
                 invalid_oper();
                 return;
             }
