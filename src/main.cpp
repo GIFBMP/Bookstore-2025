@@ -14,7 +14,7 @@ std::vector<string> proceed(const std::string &s) {
     if (str != "") v.push_back (str);
     return v;
 }
-int stringtoint(const string &s) {
+long long stringtoint(const string &s) {
     long long x = 0;
     int len = s.size();
     bool fl = false;

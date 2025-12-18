@@ -112,7 +112,7 @@ namespace gifbmp {
             book_keyword.ins(str, newbk);
         }
     }
-    void buy(const Index20 &isbn, int cnt) {
+    void buy(const Index20 &isbn, long long cnt) {
         if (nw_user.privilege < 1 || cnt <= 0) {
             invalid_oper();
             return;
@@ -212,7 +212,7 @@ namespace gifbmp {
                 selectedbook[i] = tmp;
         }
     }
-    void import(int cnt, long double totalcost) {
+    void import(long long cnt, long double totalcost) {
         if (nw_user.privilege < 3 || !is_selected[tp] || cnt <= 0 || totalcost <= 0.0) {
             invalid_oper();
             return;

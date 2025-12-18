@@ -137,11 +137,11 @@ namespace gifbmp {
     void showname(const Index60 &);
     void showauthor(const Index60 &);
     void showkeyword(const Index60 &);
-    void buy(const Index20 &, int);
+    void buy(const Index20 &, long long);
     void select(const Index20 &);
     void modify(const Index20 &, const Index60 &, \
                 const Index60 &, const Index60 &, long double, bool);
-    void import(int, long double);
+    void import(long long, long double);
     
     struct finance {
         long double income, outcome;
