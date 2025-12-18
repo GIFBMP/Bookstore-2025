@@ -212,7 +212,7 @@ int main() {
                 showall();
                 continue;
             }
-            string tmp;
+            string tmp = "";
             int len = v[1].size();
             if (v[1] == "finance") {//show finance
                 if (v.size() > 3) {
@@ -298,7 +298,7 @@ int main() {
                 invalid_oper();
                 continue;
             }
-            if (v[1].size() > 20) {
+            if (!checkisbn(v[1])) {
                 invalid_oper();
                 continue;
             }
@@ -313,7 +313,7 @@ int main() {
                 invalid_oper();
                 continue;
             }
-            if (v[1].size() > 20) {
+            if (!checkisbn(v[1])) {
                 invalid_oper();
                 continue;
             }
