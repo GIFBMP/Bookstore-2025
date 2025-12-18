@@ -32,7 +32,7 @@ namespace gifbmp {
             login_cnt.ins(userid, 1);
         }
         else {
-            int cnt = login_cnt.query(userid)[0];
+            int cnt = tmpcnt[0];
             login_cnt.del(userid, cnt);
             login_cnt.ins(userid, cnt + 1);
         }

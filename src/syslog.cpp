@@ -39,20 +39,23 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
-        std::cout << '\n';
+        //std::cout << '\n';
+        invalid_oper();
     }
     void report_finance() {
         if (nw_user.privilege < 7) {
             invalid_oper();
             return;
         }
-        std::cout << '\n';
+        //std::cout << '\n';
+        invalid_oper();
     }
     void log() {
         if (nw_user.privilege < 7) {
             invalid_oper();
             return;
         }
-        std::cout << '\n';
+        //std::cout << '\n';
+        invalid_oper();
     }
 }
