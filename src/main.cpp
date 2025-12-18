@@ -39,6 +39,11 @@ bool checkint(const string &s) {
     if (len > 2 && s[0] == '-' && s[1] == '0') return false;
     return true;
 }
+bool checkpri(const string &s) {
+    int len = s.size();
+    if (len != 1) return false;
+    return true;
+}
 bool checkdouble(const string &s) {
     int len = s.size(), cnt = 0;
     if (len > 13 || !len) return false;
@@ -59,7 +64,7 @@ bool checkdouble(const string &s) {
     if (len > 2 && s[0] == '-' && s[1] == '0' && poi_pos > 2) return false;
     return true;
 }
-double stringtodouble(const string &s) {
+long double stringtodouble(const string &s) {
     return std::stod(s);
 }
 bool checkpwd(const string &s) {
@@ -193,7 +198,7 @@ int main() {
                 invalid_oper();
                 continue;
             }
-            if (!checkpwd(v[1]) || !checkpwd(v[2]) || !checkint(v[3]) || !checkusrname(v[4])) {
+            if (!checkpwd(v[1]) || !checkpwd(v[2]) || !checkpri(v[3]) || !checkusrname(v[4])) {
                 invalid_oper();
                 continue;
             }

@@ -161,7 +161,7 @@ namespace gifbmp {
         selectedbook[tp] = v[0];
     }
     void modify(const Index20 &isbn, const Index60 &name, const Index60 &author, 
-                const Index60 &keyword, double price, bool has_price) {
+                const Index60 &keyword, long double price, bool has_price) {
         if (nw_user.privilege < 3 || !is_selected[tp]) {
             invalid_oper();
             return;
