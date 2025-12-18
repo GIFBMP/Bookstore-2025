@@ -78,7 +78,7 @@ bool checkisbn(const string &s) {
     if (len > 20 || !len) return false;
     for (int i = 0; i < len; i++) {
         if (s[i] >= 0 && s[i] <= 31) return false;
-        if (s[i] == 127) return false;
+        if (s[i] >= 127) return false;
     }
     return true;
 }
@@ -87,7 +87,7 @@ bool checkusrname(const string &s) {
     if (len > 30 || !len) return false;
     for (int i = 0; i < len; i++) {
         if (s[i] >= 0 && s[i] <= 31) return false;
-        if (s[i] == 127) return false;
+        if (s[i] >= 127) return false;
     }
     return true;
 }
@@ -97,7 +97,7 @@ bool checkname(const string &s) {
     for (int i = 0; i < len; i++) {
         if (s[i] == '\"') return false;
         if (s[i] >= 0 && s[i] <= 31) return false;
-        if (s[i] == 127) return false;
+        if (s[i] >= 127) return false;
     }
         
     return true;
