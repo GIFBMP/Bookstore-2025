@@ -16,10 +16,16 @@ namespace gifbmp {
         userindata id = isreg[0];
         //std::cerr << isreg.size() << '\n';
         //std::cerr << "user_password:" << id.password << ",input_password:" << password << '\n';
-        if (nw_user.privilege <= id.privilege && password != id.password) {
+        if (password != id.password) {
             //std::cerr << "wrong password\n";
-            invalid_oper();
-            return;
+            if (nw_user.privilege <= id.privilege) {
+                invalid_oper();
+                return;
+            }
+            else if (!password.empty()) {
+                invalid_oper();
+                return;
+            }
         }
         std::vector<int> tmpcnt = login_cnt.query(userid);
         if (tmpcnt.empty()) {
