@@ -41,30 +41,30 @@ bool checkpositiveint(const string &s) {
 bool checkpri(const string &s) {
     int len = s.size();
     if (len != 1) return false;
-    return true;
+    if (s[0] == '0' || s[0] == '1' || s[0] == '3' || s[0] == '7') return true;
+    return false;
 }
-bool checkdouble(const string &s) {
+bool checkpositivedouble(const string &s) {
     int len = s.size(), cnt = 0;
     if (len > 13 || !len) return false;
     int poi_pos = len + 1;
     for (int i = 0; i < len; i++) {
         if (s[i] == '.') {
-            if (i == 0 || (i == 1 && s[0] == '-')) return false;
+            if (i == 0) return false;
             else {
                 cnt++;
                 poi_pos = i;
                 if (cnt > 1) return false;
             }
         }
-        else if ((s[i] < '0' || s[i] > '9') && (i > 0 || s[i] != '-'))
+        else if ((s[i] < '0' || s[i] > '9'))
             return false;
     }
     if (len > 1 && s[0] == '0' && poi_pos > 1) return false;
-    if (len > 2 && s[0] == '-' && s[1] == '0' && poi_pos > 2) return false;
     return true;
 }
 long double stringtodouble(const string &s) {
-    return std::stod(s);
+    return std::stold(s);
 }
 bool checkpwd(const string &s) {
     int len = s.size();
@@ -413,7 +413,7 @@ int main() {
                     if (has_price) fl = true;
                     else {
                         for (int j = 7; j < sz; j++) tmp += v[i][j];
-                        if (!checkdouble(tmp)) {
+                        if (!checkpositivedouble(tmp)) {
                             fl = true;
                             break;
                         }
@@ -439,7 +439,7 @@ int main() {
                 invalid_oper();
                 continue;
             }
-            if (!checkdouble(v[2])) {
+            if (!checkpositivedouble(v[2])) {
                 invalid_oper();
                 continue;
             }
