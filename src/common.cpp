@@ -1,5 +1,8 @@
 #include "bookstore.h"
 namespace gifbmp {
+    DataSaver<Index300, 0> syslog("syslog", 0);
+    DataSaver<Index300, 0> financelog("financelog", 0);
+    DataSaver<Index300, 0> employeelog("employeelog", 0);
     //#define TEST
     #ifndef TEST
     /*

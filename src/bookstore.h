@@ -47,7 +47,12 @@ namespace gifbmp {
                 if (s[i] != t.s[i]) return true;
             return false;
         }
-        
+        string tostring() const {
+            string ret = "";
+            for (int i = 0; i < len; i++)
+                if (s[i] != '\0') ret += s[i];
+            return ret;
+        }
     };
     template<int len>
     std::istream& operator >> (std::istream &in, Index<len> x) {
@@ -63,6 +68,7 @@ namespace gifbmp {
     using Index20 = Index<20>;
     using Index30 = Index<30>;
     using Index60 = Index<60>;
+    using Index300 = Index<300>;
     class User {
         Index30 userid, username, password;
         int privilege;
@@ -150,6 +156,9 @@ namespace gifbmp {
     };
     extern DataSaver<finance, 0> finance_log;//reserve
     extern DataSaver<long double, 0> profits;
+    extern DataSaver<Index300, 0> syslog;
+    extern DataSaver<Index300, 0> financelog;
+    extern DataSaver<Index300, 0> employeelog;
     void show_finance_all();
     void show_finance(int);
     void log();

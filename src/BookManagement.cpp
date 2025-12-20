@@ -14,6 +14,8 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        Index300 tmp = loginstack[tp].tostring() + ":show";
+        syslog.write(tmp);
         book_isbn.printall();
     }
     void showisbn(const Index20 &isbn) {
@@ -21,6 +23,8 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        Index300 tmp = loginstack[tp].tostring() + ":show";
+        syslog.write(tmp);
         std::vector<Book> v = book_isbn.query(isbn);
         if (v.empty()) {
             std::cout << '\n';
@@ -33,6 +37,8 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        Index300 tmp = loginstack[tp].tostring() + ":show";
+        syslog.write(tmp);
         std::vector<Book> v = book_name.query(name);
         if (v.empty()) {
             std::cout << '\n';
@@ -45,6 +51,8 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        Index300 tmp = loginstack[tp].tostring() + ":show";
+        syslog.write(tmp);
         std::vector<Book> v = book_author.query(author);
         if (v.empty()) {
             std::cout << '\n';
@@ -67,6 +75,8 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        Index300 tmp = loginstack[tp].tostring() + ":show";
+        syslog.write(tmp);
         std::vector<Book> v = book_keyword.query(keyword);
         if (v.empty()) {
             std::cout << '\n';
@@ -125,9 +135,18 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        std::ostringstream ostr;
+        ostr << loginstack[tp].tostring() << " bought book "
+                << isbn.tostring() << " with cnt=" << cnt;
+        Index300 logtmp = ostr.str();
+        syslog.write(logtmp);
+        if (nw_user.privilege >= 3) employeelog.write(logtmp);
         Book tmp = v[0];
         tmp.cnt -= cnt;
         upd(v[0], tmp);
+        ostr << " income:" << std::fixed << std::setprecision(2) << tmp.price * cnt;
+        logtmp = ostr.str();
+        financelog.write(logtmp);
         finance profit = finance(tmp.price * cnt, 0.0);
         std::cout << std::fixed << std::setprecision(2) << tmp.price * cnt << '\n';
         finance_log.write(profit);
@@ -146,9 +165,12 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        Index300 tmp = loginstack[tp].tostring() + " selected book " + isbn.tostring();
+        syslog.write(tmp);
+        employeelog.write(tmp);
         is_selected[tp] = 1;
         std::vector<Book> v = book_isbn.query(isbn);
-        std::cerr << "now_selected " << "isbn:" << isbn << '\n';
+        //std::cerr << "now_selected " << "isbn:" << isbn << '\n';
         if (v.empty()) {
             selectedbook[tp] = Book();
             selectedbook[tp].ISBN = isbn;
@@ -199,12 +221,18 @@ namespace gifbmp {
                 return;
             }
         }
+        std::ostringstream ostr;
+        ostr << loginstack[tp].tostring() << " changed book " << selectedbook[tp].ISBN.tostring()\
+             << " to";
         Book tmp = selectedbook[tp], tmp2 = tmp;
-        if (!isbn.empty()) tmp.ISBN = isbn;
-        if (!name.empty()) tmp.name = name;
-        if (!author.empty()) tmp.author = author;
-        if (!keyword.empty()) tmp.keyword = keyword;
-        if (has_price == true) tmp.price = price;
+        if (!isbn.empty()) tmp.ISBN = isbn, ostr << " ISBN=" << isbn.tostring();
+        if (!name.empty()) tmp.name = name, ostr << " name=" << name.tostring();
+        if (!author.empty()) tmp.author = author, ostr << " author=" << author.tostring();
+        if (!keyword.empty()) tmp.keyword = keyword, ostr << " keyword=" << keyword.tostring();
+        if (has_price == true) tmp.price = price, ostr << std::fixed << std::setprecision(2) << " price=" << price;
+        Index300 logtmp = ostr.str();
+        syslog.write(logtmp);
+        employeelog.write(logtmp);
         upd(selectedbook[tp], tmp);
         for (int i = tp; i; i--) {
             if (!is_selected[i]) continue;
@@ -217,7 +245,13 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
-        std::cerr << "import isbn:" << selectedbook[tp].ISBN << ",cnt:" << cnt << '\n'; 
+        //std::cerr << "import isbn:" << selectedbook[tp].ISBN << ",cnt:" << cnt << '\n'; 
+        std::ostringstream ostr;
+        ostr << loginstack[tp].tostring() << " imported book " << selectedbook[tp].ISBN.tostring()\
+             << " with cnt=" << cnt << ", totalcost=" << std::fixed << std::setprecision(2) << totalcost;
+        Index300 logtmp = ostr.str();
+        syslog.write(logtmp);
+        financelog.write(logtmp);
         Book tmp = selectedbook[tp], tmp2 = tmp;
         tmp.cnt += cnt;
         finance cost = finance(0.0, totalcost);

@@ -27,6 +27,8 @@ namespace gifbmp {
                 return;
             }
         }
+        Index300 tmp = userid.tostring() + " logined";
+        syslog.write(tmp);
         std::vector<int> tmpcnt = login_cnt.query(userid);
         if (tmpcnt.empty()) {
             login_cnt.ins(userid, 1);
@@ -48,6 +50,8 @@ namespace gifbmp {
         is_selected[tp] = 0;
         selectedbook[tp] = Book();
         Index30 userid = loginstack[tp];
+        Index300 tmp = userid.tostring() + " logouted";
+        syslog.write(tmp);
         std::vector<int> tmpcnt = login_cnt.query(userid);
         assert(!tmpcnt.empty());
         int cnt = tmpcnt[0];
@@ -80,6 +84,12 @@ namespace gifbmp {
                 return;
             }
         }
+        Index300 tmp = userid.tostring() + \
+                "'s password was changed from " + \
+                current_password.tostring() + " to " + \
+                new_password.tostring() + " by " + \
+                loginstack[tp].tostring();
+        syslog.write(tmp);
         list_of_users.del(userid, id);
         id.password = new_password;
         list_of_users.ins(userid, id);
@@ -94,6 +104,11 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        Index300 tmp = "a new user was registered with userid=" + \
+                        userid.tostring() + ", password=" + \
+                        password.tostring() + ", username=" + \
+                        username.tostring();
+        syslog.write(tmp);
         userindata nw;
         nw.password = password;
         nw.privilege = 1;
@@ -118,6 +133,13 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        Index300 tmp = "a new user was added with userid=" + \
+                        userid.tostring() + ", password=" + \
+                        password.tostring() + ", privilege=" + \
+                        (char)(privilege + '0') + ", username=" + \
+                        username.tostring() + " by " + \
+                        loginstack[tp].tostring();
+        syslog.write(tmp);
         //std::cerr << "add successfully\n";
         userindata nw;
         nw.password = password;
@@ -141,6 +163,8 @@ namespace gifbmp {
             invalid_oper();
             return;
         }
+        Index300 tmp = "user " + userid.tostring() + "was deleted by " + loginstack[tp].tostring();
+        syslog.write(tmp);
         //int cnt = login_cnt.query(userid)[0];
         list_of_users.del(userid, isreg[0]);
         login_cnt.del(userid, 0);
